@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/scale_bg"
+    tools:context=".MainActivity" >
+
+    <!-- removed ads on full version -->
+    <!-- <com.google.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="a151e8945dc46be"
+            ads:testDevices = "TEST_EMULATOR, D846242D681CE78E157D6DDA7C20D006,BA9AECC0C814E4D484E2E4EE05C29F32"
+            ads:loadAdOnCreate="true" >
+        </com.google.ads.AdView> -->
+        
+    <Button
+        android:id="@+id/buttonTest"
+        android:layout_width="fill_parent"
+        android:layout_height="310dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:onClick="onClickScale" />
+
+    <TextView
+        android:id="@+id/textViewWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scale_initial"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="35sp"
+        android:layout_marginTop="76dp"
+        android:layout_below="@+id/buttonTest"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

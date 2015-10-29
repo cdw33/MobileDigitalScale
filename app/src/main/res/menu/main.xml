@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/zero" android:title="@string/menu_zero"></item>
+    
+    
+    <item android:id="@+id/units" android:title="Switch Units"></item><item android:id="@+id/calibrate" android:title="Calibrate"></item><item android:id="@+id/about" android:title="About"></item>
+    
+</menu>

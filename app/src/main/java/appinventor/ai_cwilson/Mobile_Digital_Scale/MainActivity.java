@@ -1,7 +1,5 @@
 package appinventor.ai_cwilson.Mobile_Digital_Scale;
 
-import com.google.ads.AdView;
-import com.google.ads.AdRequest;
 import appinventor.ai_cwilson.Mobile_Digital_Scale.R;
 
 import android.net.Uri;
@@ -21,103 +19,35 @@ public class MainActivity extends Activity {
 	boolean bounce = false; // indicates scale status for bounce up/down
 	static int TIME = 350;	//bounce time in milliseconds
 	String unit = "g";		//string for units 'g' or 'oz'
-	
+
+	Activity activity;
+
+	//Shared Preferences
+	SharedPreferences sharedPreferences;
+	SharedPreferences.Editor editor;
+	final static String RUN_COUNT_KEY = "runcount";
+	final static String RATING_DIALOG_KEY = "showRating";
+	int runCount;
+	boolean showRatingDialog;
+
+	TextView textViewWeight;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		//no ads on full version
-		/*AdView adView = (AdView) findViewById(R.id.adView); 
-		adView.loadAd(new AdRequest());*/
-		
-		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			weight = extras.getDouble("newWeight");
-			unit = extras.getString("UNIT");
+		activity = this;
 
-			updateUnit();
-			
-		}
-		
-		//Shared Preferences
-		
-		//SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-	    
-		
-		//instead of bool flag, should do version/timestamp
-		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
-	    int runCount = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getInt("runCount", 0); 
-	    int rateCount = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getInt("rateCount", 3);
-	    String version = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("version", getString(R.string.cur_version));	//getString(R.string.cur_version)
-	    
-	    if (firstrun){ 
-	    	
-	    	//update showFirstRun function
-	    	showChangeLog(this, "First Run");
-	    	
-	    	// Update firstrun to false
-	    	getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-	    		.edit()
-	    		.putBoolean("firstrun", false)
-	    		.commit();
-	    }
-	     
-	    String newVersion = getString(R.string.cur_version);
-	    
-	    //if current version is different than prev saved version
-	    
-	    /*
-	    
-	    No clue why this isnt working
-	    
-	    
-	    */
-	    
-	    /*
-	    
-	    Toast toast = Toast.makeText(this, "Shared = " + version, Toast.LENGTH_SHORT);
-		toast.show();
-		
-		Toast toast2 = Toast.makeText(this, "String = " + getString(R.string.cur_version), Toast.LENGTH_SHORT);
-		toast2.show();
-		
-		if (!version.equals(newVersion)){	
-			Toast toast3 = Toast.makeText(this, "Not Equal" , Toast.LENGTH_SHORT);
-			toast3.show();
-		}
-		
-		if (version.equals(newVersion)){	
-			Toast toast4 = Toast.makeText(this, "Equal", Toast.LENGTH_SHORT);
-			toast4.show();
-		}
-	    */
+		initTextViews();
 
-	    
-	    
-	    if (!version.equals(newVersion)){	
-	    	
-	    	//SharedPreferences.Editor editor = preferences.edit();
-	    	
-			showChangeLog(this, "Change Log");	//comment this to deactivate change log
-			
-			//editor.putString("version", getString(R.string.cur_version)).commit();
-			
-			/*Toast toast = Toast.makeText(this, getString(R.string.cur_version), Toast.LENGTH_SHORT);
-			toast.show();*/
-    	}
-		
-		runCount++;
-		getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-        .edit()
-        .putInt("runCount", runCount)
-        .commit();
-		
-		if(runCount == rateCount){
-			showRatingDialog(this);	
-	    }
-	    
+		initSharedPreferences();
 
+		processRunCountChecks();
+
+		resetScaleLCD();
+
+		//Toast.makeText(MainActivity.this, "RunCount: " + runCount + " - ShowRating: " + showRatingDialog, Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -127,95 +57,111 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
-	// @Override
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.zero:
-			onClickZero();
-			return true;
-		case R.id.calibrate:
-			Intent myIntent = new Intent(MainActivity.this, Calibrate.class);
-			myIntent.putExtra("newWeight", weight);
-			MainActivity.this.startActivity(myIntent);
-			return true;
-		case R.id.about:
-			Intent i = new Intent(MainActivity.this, About.class);
-			startActivity(i);
-			return true;
-		case R.id.units:
-			switchUnits();
-		default:
-			return super.onOptionsItemSelected(item);
+			case R.id.zero:
+				onClickZero();
+				return true;
+			case R.id.calibrate:
+				showCalibrateDialog();
+				return true;
+			case R.id.about:
+				showAboutDialog();
+				return true;
+			case R.id.units:
+				switchUnits();
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
+	public void incrementRunCounter(){
+		runCount++;
 
-	
-	public void showChangeLog(Activity activity, String title) {
-	    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-	    CharSequence message = "If this is your first use, be sure to watch the video tutorial.\n\n" + 
-	    		               "New in this release:\n\n" +
-	    		               "-Rewritten from the ground up to improve speed and memory utilization.\n\n" +
-	    		               "-Controls are now reached via the Menu button.";
-	    
-	    builder.setTitle(title);
-	    builder.setMessage(message);
-	    
-	    builder.setPositiveButton("Watch Tutorial", new DialogInterface.OnClickListener()
-	    {
-	        @Override
-	        public void onClick(DialogInterface dialog, int whichButton)
-	        {	        	
-	        	//http://youtube.com/insidetheturtleshell
-	        	//http://www.youtube.com/watch?v=9JaCmMhlQoQ
-	        	
-	        	startActivity(new Intent(Intent.ACTION_VIEW, 
-	        			          Uri.parse("http://www.youtube.com/watch?v=9JaCmMhlQoQ")));
-	        	}
-	    });
-	    
-	    builder.setNegativeButton("OK", null);
-	    builder.show();
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+		editor = sharedPreferences.edit();
+
+		editor.putInt(RUN_COUNT_KEY, runCount).commit();
 	}
-	
-	public void showRatingDialog(Activity activity) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-		String title = "Rate Now";
-		CharSequence message = "If you like this app, please support the Developers by raiting us on Google Play!";
-	        
-		if (title != null)
-	        builder.setTitle(title);
-	    builder.setMessage(message);
-		
-	    builder.setNegativeButton("Rate Now", new DialogInterface.OnClickListener()
-	    {
-	        @Override
-	        public void onClick(DialogInterface dialog, int whichButton)
-	        {	        	
-	        	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=appinventor.ai_cwilson.Mobile_Digital_Scale"));
-		    	startActivity(browserIntent);
-	        }
-	    });
-	    
-	    builder.setNeutralButton("Later", new DialogInterface.OnClickListener()
-	    {
-	        @Override
-	        public void onClick(DialogInterface dialog, int whichButton)
-	        {	        	
-	        	int rateCount = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getInt("rateCount", 3);
-	        	 
-	        	getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-	    		.edit()
-	    		.putInt("rateCount", rateCount+(rateCount/2)+2)	//shows 'rate me' dialog on runs 3, 6, 11, 19 etc.
-	    		.commit();
-	        }
-	    });
-	    
-	    builder.setPositiveButton("Rate Never", null);
 
-	    builder.show();
+	public void processRunCountChecks(){
+		if(runCount == 1){
+			showChangeLog();
+		}
+		else if(showRatingDialog && runCount % 3 == 0){ //Only show rating dialog every 3 runs while showRatingDialog sharedPref is true
+			showRatingDialog();
+		}
+	}
+
+	public void initSharedPreferences() {
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+		runCount = sharedPreferences.getInt(RUN_COUNT_KEY, 0);
+		showRatingDialog = sharedPreferences.getBoolean(RATING_DIALOG_KEY, true);
+
+		incrementRunCounter();
+	}
+
+	public void initTextViews(){
+		textViewWeight = (TextView) findViewById(R.id.textViewWeight);
+	}
+
+	public void showChangeLog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		CharSequence message = "If this is your first use, be sure to watch the video tutorial.\n\n" +
+				"New in this release:\n\n" +
+				"-Rewritten from the ground up to improve speed and memory utilization.\n\n" +
+				"-Controls are now reached via the Menu button.";
+
+		builder.setTitle("Change Log");
+		builder.setMessage(message);
+
+		builder.setPositiveButton("Watch Tutorial", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+				//http://youtube.com/insidetheturtleshell
+				//http://www.youtube.com/watch?v=9JaCmMhlQoQ
+
+				startActivity(new Intent(Intent.ACTION_VIEW,
+						Uri.parse("http://www.youtube.com/watch?v=9JaCmMhlQoQ")));
+			}
+		});
+
+		builder.setNegativeButton("OK", null);
+		builder.show();
+	}
+
+	public void showRatingDialog() {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		String title = "Rate Now";
+		CharSequence message = "If you like this app, please support the Developers by rating us on Google Play!";
+
+		builder.setTitle(title);
+		builder.setMessage(message);
+
+		builder.setPositiveButton("Rate Now", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=appinventor.ai_cwilson.Mobile_Digital_Scale"));
+				startActivity(browserIntent);
+
+				editor.putBoolean(RATING_DIALOG_KEY, false).commit();
+			}
+		});
+
+		builder.setNeutralButton("Later", null);
+
+		builder.setNegativeButton("Rate Never", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+				editor.putBoolean(RATING_DIALOG_KEY, false).commit();
+			}
+		});
+
+		builder.show();
 	}
 
 	public void onClickScale(View view) {
@@ -227,11 +173,9 @@ public class MainActivity extends Activity {
 			Toast toast = Toast.makeText(this, "Use Menu > Calibrate to initialize the scale.", Toast.LENGTH_SHORT);
 			toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0 , 110);
 			toast.show();
-		}
+		} else {
 
-		else {
-
-			updateWeight(weight * (Math.random() % 100));
+			displayWeight(weight * (Math.random() % 100));
 
 			// ugly as FUCK but works for now
 			// need to work on more elegant solution
@@ -239,17 +183,17 @@ public class MainActivity extends Activity {
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					updateWeight(weight * (Math.random() % 100));
+					displayWeight(weight * (Math.random() % 100));
 				}
 			}, TIME / 2);
 
 			// bounce up
-			if (bounce == false) {
+			if (!bounce) {
 				bounce = true;
 				handler.postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						updateWeight(weight);
+						displayWeight(weight);
 					}
 				}, TIME);// was 800
 			}
@@ -260,7 +204,7 @@ public class MainActivity extends Activity {
 				handler.postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						updateWeight(0.0);
+						displayWeight(0.0);
 					}
 				}, TIME);
 			}
@@ -268,54 +212,159 @@ public class MainActivity extends Activity {
 
 	}
 
-	public void onClickZero() // zero out scale
-	{
-		updateWeight(0); // set weight to 0;
+	public void onClickZero(){ //Reset scale to zero
+		displayWeight(0); // set weight to 0;
 		bounce = false; // reset bounce bool
 	}
 
-	public void updateWeight(double newWeight) { // update weight output textbox
-		TextView textViewWeight = (TextView) findViewById(R.id.textViewWeight);
-
+	public void displayWeight(double newWeight) { //Update LCD TextBox
 		if (newWeight == 0) { // if object is removed
 			textViewWeight.setText("0.0" + " " + unit);
 		}
-
 		else { // if object is placed
-			textViewWeight.setText(String.format("%.2f", newWeight) + " "
-					+ unit); // String.format to set decimal precision
+			textViewWeight.setText(String.format("%.2f", newWeight) + " " + unit);
 		}
-
 	}
 
 	public void switchUnits() {
-		TextView textViewWeight = (TextView) findViewById(R.id.textViewWeight);
-
 		if (unit.contains("g")) {
 			unit = "oz";
-			weight = weight * 0.035274; // ounces = grams * 0.035274
+			weight = convertGramsToOunces(weight);
 		}
-
 		else {
 			unit = "g";
-			weight = weight / 0.035274; // grams = ounces / 0.035274
+			weight = convertOuncesToGrams(weight);
 		}
-
-		if (!textViewWeight.getText().toString().contains("0.0")) {
-			updateWeight(weight);
+		if (textViewWeight.getText().toString().contains("0.0")) {
+			resetScaleLCD();
+		} else {
+			displayWeight(weight);
 		}
-
-		else {
-			textViewWeight.setText("0.0 " + unit);
-		}
-
 	}
 
-	public void updateUnit() {
-		TextView textViewWeight = (TextView) findViewById(R.id.textViewWeight);
+	public double convertGramsToOunces(double grams){
+		return grams * 0.035274; //ounces = grams * 0.035274
+	}
 
+	public double convertOuncesToGrams(double ounces){
+		return ounces / 0.035274; //grams = ounces / 0.035274
+	}
+
+	public void resetScaleLCD() {
 		textViewWeight.setText("0.0 " + unit);
-
 	}
 
+	public void showCalibrateDialog(){
+		LayoutInflater li = LayoutInflater.from(this);
+		View calibrateView = li.inflate(R.layout.calibrate_dialog, null);
+
+		final EditText userInput = (EditText) calibrateView.findViewById(R.id.weightInputTextBox);
+
+		final CheckBox Checkbox_g = (CheckBox) calibrateView.findViewById(R.id.gramsCheckbox);
+		final CheckBox Checkbox_o = (CheckBox) calibrateView.findViewById(R.id.ouncesCheckBox);
+
+		final Button clearButton = (Button) calibrateView.findViewById(R.id.clearButton);
+
+		final AlertDialog calibrateDialog = new AlertDialog.Builder(this)
+				.setView(calibrateView)
+				.setTitle("Calibrate")
+				.setPositiveButton("Save", null) //Set to null. We override the onclick
+				.setNegativeButton(android.R.string.cancel, null)
+				.create();
+
+		calibrateDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+
+				//Handle "Clear" button press
+				clearButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						userInput.setText("");
+					}
+				});
+
+				//Handle "Save" button press
+				Button b = calibrateDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+				b.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+
+						if (!Checkbox_g.isChecked() && !Checkbox_o.isChecked()) { //no units selected
+							Toast.makeText(activity, "Please select units.", Toast.LENGTH_SHORT).show();
+						} else if (userInput.getText().toString().equals("")) { //no weight set
+							Toast.makeText(activity, "Please input weight.", Toast.LENGTH_SHORT).show();
+						} else if (Checkbox_g.isChecked() && Double.valueOf(userInput.getText().toString()) > 999.99) { //weight about max for grams
+							Toast.makeText(activity, "Too much weight for grams.", Toast.LENGTH_SHORT).show();
+						} else if (Checkbox_o.isChecked() && Double.valueOf(userInput.getText().toString()) > 35.27) {  //weight about max for ounces
+							Toast.makeText(activity, "Too much weight for ounces.", Toast.LENGTH_SHORT).show();
+						} else {
+							//Set weight
+							weight = Double.valueOf(userInput.getText().toString());
+
+							Toast.makeText(activity, "Weight Set.", Toast.LENGTH_SHORT).show(); //weight set successfully!
+
+							if (Checkbox_g.isChecked()) { //Set units string
+								unit = "g";
+							} else {
+								unit = "oz";
+							}
+
+							resetScaleLCD();
+
+							calibrateDialog.dismiss(); //exit dialog
+						}
+					}
+				});
+			}
+		});
+
+		calibrateDialog.show(); //Show dialog
+	}
+
+	public void showAboutDialog(){
+		LayoutInflater li = LayoutInflater.from(this);
+		View promptsView = li.inflate(R.layout.about_dialog, null);
+
+		final TextView playVideo = (TextView) promptsView.findViewById(R.id.video);
+
+		final TextView appName = (TextView) promptsView.findViewById(R.id.textViewAppName);
+
+		appName.setText(appName.getText() + getString(R.string.cur_version));
+
+		final AlertDialog aboutDialog = new AlertDialog.Builder(this)
+				.setView(promptsView)
+				.setTitle("About")
+				.setPositiveButton("Ok", null) //Set to null. We override the onclick
+				.setNegativeButton("Close", null)
+				.create();
+
+		aboutDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+
+				//Handle video link press
+				playVideo.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=9JaCmMhlQoQ"));
+						startActivity(i);
+					}
+				});
+
+				//Handle "Buy" button press
+				Button b = aboutDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+				b.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						aboutDialog.dismiss(); //exit dialog
+					}
+				});
+			}
+		});
+
+		aboutDialog.show(); //Show dialog
+	}
 }

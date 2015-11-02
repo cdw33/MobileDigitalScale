@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Mobile Digital Scale.iml" filepath="$PROJECT_DIR$/Mobile Digital Scale.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MobileDigitalScale.iml" filepath="$PROJECT_DIR$/MobileDigitalScale.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mobile Digital Scale</string>
+    <string name="ab_appname">Mobile Digital Scale v</string>
+    <string name="cur_version">4.1.1</string>
+    <string name="prev_version">4.1</string>
     <string name="action_settings">Settings</string>
     <string name="menu_zero">Zero</string>
     <string name="set_title">Settings</string>
@@ -17,8 +20,6 @@
     <string name="cal_save">Save</string>
     <string name="cal_cancel">Cancel</string>
     <string name="ab_title">About</string>
-    <string name="ab_appname">Mobile Digital Scale v</string>
-    <string name="cur_version">4.0</string>
     <string name="ab_tip">Tips</string>
     <string name="ab_buy">Buy Ad-Free</string>
     <string name="ab_back">Back</string>
@@ -32,7 +33,6 @@
     <string name="cal_quick2">7g = .25oz</string>
     <string name="cal_quick3">14g = .5oz</string>
     <string name="cal_quick4">28g = 1oz</string>
-    <string name="prev_version">4.0</string>
     <string name="ab_vid_info">Watch the video tutorial below:</string>
     <string name="tutorial_link"><u>YouTube.com/InsideTheTurtleShell</u>http://www.youtube.com/watch?v=9JaCmMhlQoQ</string>
     <string name="ab_channel">YouTube.com/InsideTheTurtleShell</string>

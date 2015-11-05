@@ -313,10 +313,43 @@ public class MainActivity extends Activity {
 							}
 
 							resetScaleLCD();
+							onClickZero();
 
 							calibrateDialog.dismiss(); //exit dialog
 						}
 					}
+				});
+
+				//Handle Checkboxs
+				final CheckBox cbGrams = (CheckBox) calibrateDialog.findViewById(R.id.gramsCheckbox);
+				final CheckBox cbOunces = (CheckBox) calibrateDialog.findViewById(R.id.ouncesCheckBox);
+
+				//Check currently selected unit checkbox
+				if(unit == "g"){
+					cbGrams.setChecked(true);
+				}
+				else{
+					cbOunces.setChecked(true);
+				}
+
+				//Handle checkbox clicks - only one should be selected at a time
+				cbGrams.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				   @Override
+				   public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					   if (cbGrams.isChecked() && cbOunces.isChecked()) {
+						   cbOunces.setChecked(false);
+					   }
+				   }
+				});
+
+				cbOunces.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+				   @Override
+				   public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					   if (cbOunces.isChecked() && cbGrams.isChecked()) {
+						   cbGrams.setChecked(false);
+					   }
+				   }
 				});
 			}
 		});

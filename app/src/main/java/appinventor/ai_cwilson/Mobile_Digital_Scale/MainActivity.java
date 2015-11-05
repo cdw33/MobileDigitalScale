@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 	int runCount;
 	boolean showRatingDialog;
 
-	TextView textViewWeight;
+	AutoResizeTextView textViewWeight;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,15 +106,16 @@ public class MainActivity extends Activity {
 	}
 
 	public void initTextViews(){
-		textViewWeight = (TextView) findViewById(R.id.textViewWeight);
+		textViewWeight = (AutoResizeTextView) findViewById(R.id.textViewWeight);
 	}
 
 	public void showChangeLog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 		CharSequence message = "If this is your first use, be sure to watch the video tutorial.\n\n" +
 				"New in this release:\n\n" +
-				"-Rewritten from the ground up to improve speed and memory utilization.\n\n" +
-				"-Controls are now reached via the Menu button.";
+				"•Rewritten from the ground up to improve speed and memory utilization.\n\n" +
+				"•Fixed layout issues with certain high DPI devices\n\n" +
+				"•Updated Calibration and About dialogs";
 
 		builder.setTitle("Change Log");
 		builder.setMessage(message);

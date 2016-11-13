@@ -2,8 +2,7 @@
 <resources>
     <!-- Application -->
     <string name="app_name">Mobile Digital Scale</string>
-    <string name="cur_version" translatable="false">4.2</string>
-    <string name="prev_version" translatable="false">4.1.1</string>
+    <string name="cur_version">4.2</string>
 
     <!-- Global -->
     <string name="yes">Yes</string>
@@ -20,8 +19,8 @@
     <string name="title_calibrate">Calibrate</string>
     <string name="title_about">About</string>
 
-    <string name="zero_weight" translatable="false">0.0</string>
-    <string name="lcd_weight" translatable="false">%1$s %2$s</string>
+    <string name="zero_weight">0.0</string>
+    <string name="lcd_weight">%1$s %2$s</string>
 
     <!-- About Dialog -->
     <string name="ab_version_abbr">v</string>
@@ -30,8 +29,8 @@
                            •To activate the scale, be sure to touch the screen with your finger when placing your object on the scale.\n\n
                            •You must touch the screen when placing and/or removing your item to ensure the proper effect.</string>
     <string name="ab_vid_info">Watch the video tutorial below:</string>
-    <string name="ab_channel" translatable="false">YouTube.com/InsideTheTurtleShell</string>
-    <string name="ab_copyright" translatable="false">TurtleShell Interactive ©2016</string>
+    <string name="ab_channel">YouTube.com/InsideTheTurtleShell</string>
+    <string name="ab_copyright">TurtleShell Interactive ©2016</string>
     <string name="ab_buy">Buy Ad-Free</string>
 
     <!-- Change Log -->

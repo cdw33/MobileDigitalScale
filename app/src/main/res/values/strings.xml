@@ -1,40 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Application -->
     <string name="app_name">Mobile Digital Scale</string>
-    <string name="ab_appname">Mobile Digital Scale v</string>
-    <string name="cur_version">4.1.1</string>
-    <string name="prev_version">4.1</string>
-    <string name="action_settings">Settings</string>
-    <string name="menu_zero">Zero</string>
-    <string name="set_title">Settings</string>
+    <string name="cur_version" translatable="false">4.2</string>
+    <string name="prev_version" translatable="false">4.1.1</string>
+
+    <!-- Global -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">Ok</string>
+    <string name="close">Close</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+
+    <!-- Menu Items -->
+    <string name="title_zero">Zero</string>
+    <string name="title_switch_units">Switch Units</string>
+    <string name="title_calibrate">Calibrate</string>
+    <string name="title_about">About</string>
+
+    <string name="zero_weight" translatable="false">0.0</string>
+    <string name="lcd_weight" translatable="false">%1$s %2$s</string>
+
+    <!-- About Dialog -->
+    <string name="ab_version_abbr">v</string>
+    <string name="ab_tips_title">Tips</string>
+    <string name="ab_tips">•To set the weight that you want to display, simply use the calibrate button and edit the weight settings.\n\n
+                           •To activate the scale, be sure to touch the screen with your finger when placing your object on the scale.\n\n
+                           •You must touch the screen when placing and/or removing your item to ensure the proper effect.</string>
+    <string name="ab_vid_info">Watch the video tutorial below:</string>
+    <string name="ab_channel" translatable="false">YouTube.com/InsideTheTurtleShell</string>
+    <string name="ab_copyright" translatable="false">TurtleShell Interactive ©2016</string>
+    <string name="ab_buy">Buy Ad-Free</string>
+
+    <!-- Change Log -->
+    <string name="changelog">Change Log</string>
+    <string name="watch_tutorial">Watch Tutorial</string>
+    <string name="changelog_msg">"If this is your first use, be sure to watch the video tutorial.\n\n"
+                                 "New in this release:\n\n"
+                                 "•Implemented functional On/Off button\n\n"
+                                 "•Made initial calibration easier to access\n\n"
+                                 "•Minor speed and reliability updates" </string>
+
+    <!-- Units -->
+    <string name="grams">grams</string>
+    <string name="ounces">ounces</string>
+    <string name="grams_abbr">g</string>
+    <string name="ounces_abbr">oz</string>
+
+    <!-- Rating Dialog -->
+    <string name="rate_now">Rate Now</string>
+    <string name="rate_later">Later</string>
+    <string name="rate_never">Rate Never</string>
+    <string name="rate_message">If you like this app, please support the Developers by rating us on Google Play!</string>
+
+    <!-- Calibration Dialog-->
     <string name="cal_Input">Input Weight</string>
-    <string name="cal_defaultUnit">g  </string>
     <string name="cal_clear">Clear</string>
+    <string name="set_hint">eg. \'3.2\'</string>
     <string name="cal_max">Max Weight: 999.99g  35.27oz</string>
     <string name="cal_selectUnits">Select Units</string>
-    <string name="cal_grams">Grams</string>
-    <string name="cal_g">g</string>
-    <string name="cal_ounces">Ounces</string>
-    <string name="cal_oz">oz</string>
-    <string name="cal_quick">Quick Conversions</string>
-    <string name="cal_save">Save</string>
-    <string name="cal_cancel">Cancel</string>
-    <string name="ab_title">About</string>
-    <string name="ab_tip">Tips</string>
-    <string name="ab_buy">Buy Ad-Free</string>
-    <string name="ab_back">Back</string>
-    <string name="set_hint">eg. \'3.2\'</string>
-    <string name="scale_initial">0.0 g</string>
-    <string name="ab_tip1">•To set the weight that you want to display, simply use the calibrate button and edit the weight settings.</string>
-    <string name="ab_tip2">•To activate the scale, be sure to touch the screen with your finger when placing your object on the scale.</string>
-    <string name="ab_tip3">•You must touch the screen when placing and/or removing your item to ensure the proper effect.</string>
-    <string name="ab_copyright">TurtleShell Interactive ©2016</string>
-    <string name="cal_quick1">3.5g = .125oz</string>
-    <string name="cal_quick2">7g = .25oz</string>
-    <string name="cal_quick3">14g = .5oz</string>
-    <string name="cal_quick4">28g = 1oz</string>
-    <string name="ab_vid_info">Watch the video tutorial below:</string>
-    <string name="tutorial_link"><u>YouTube.com/InsideTheTurtleShell</u>http://www.youtube.com/watch?v=9JaCmMhlQoQ</string>
-    <string name="ab_channel">YouTube.com/InsideTheTurtleShell</string>
-    <string name="cal_title">Calibrate</string>
+    <string name="not_calibrated_title">Not Calibrated</string>
+    <string name="not_calibrated_msg">The scale has not yet been calibrated. Would you like to calibrate it now?</string>
+    <string name="cal_error_units_empty">Please select units.</string>
+    <string name="cal_error_weight_empty">Please input weight.</string>
+    <string name="cal_error_gram_max">Too much weight for grams.</string>
+    <string name="cal_error_ounce_max">Too much weight for ounces.</string>
+    <string name="calibrate_success">Calibration Successful.</string>
 </resources>

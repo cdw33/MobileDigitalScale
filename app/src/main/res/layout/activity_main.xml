@@ -14,6 +14,15 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
+        <!--<com.google.android.gms.ads.AdView
+            android:id="@+id/ad_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id" />-->
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
@@ -25,6 +34,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
             </LinearLayout>
 
             <Button
@@ -61,11 +71,11 @@
                     android:layout_weight="0.547"
                     android:background="@drawable/scale_center">
 
-                    <appinventor.ai_cwilson.Mobile_Digital_Scale.AutoResizeTextView
+                    <com.turtleshell.mds.AutoResizeTextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/scale_initial"
+                        android:text=""
                         android:id="@+id/textViewWeight"
                         android:gravity="center_vertical|right"
                         android:textSize="55sp"/>
@@ -81,12 +91,52 @@
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center_horizontal"
             android:layout_weight=".847"
-            android:background="@drawable/scale_bottom"></LinearLayout>
+            android:background="@drawable/scale_bottom">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.4">
+
+                    <Button
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/power_button"
+                        android:background="@android:color/transparent"
+                        android:layout_weight="1"
+                        android:onClick="onClickTogglePower" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1">
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>
